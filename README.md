@@ -1,6 +1,7 @@
 # devicedetect
 
-A lightweight library for retrieving type-safe device and manufacturer-specific information on Android.
+A lightweight library for retrieving type-safe device and manufacturer-specific information on
+Android.
 
 ## Prerequisites
 
@@ -73,7 +74,7 @@ files.
 Add this to your build.gradle:
 
 ```groovy
-implementation 'com.ragibn5:devicedetect:0.0.1'
+implementation 'com.github.Ragibn5:devicedetect:0.0.1'
 ```
 
 ## Contributing
