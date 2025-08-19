@@ -16,7 +16,7 @@ data class DeviceVendor(
 
         fun detect(): DeviceVendor {
             val (detectedManufacturer, detectedBrand) = detectManufacturerAndBrand()
-            val os = detectOS(detectedManufacturer, detectedBrand)
+            val os = detectOS()
 
             return DeviceVendor(
                 manufacturer = detectedManufacturer,
@@ -150,68 +150,60 @@ data class DeviceVendor(
             }
         }
 
-        private fun detectOS(
-            manufacturer: DeviceManufacturer,
-            detectedBrand: DeviceBrand,
-        ): DeviceOS {
+        private fun detectOS(): DeviceOS {
             // Xiaomi - HyperOS
             // Example value: 1
-            val hyperOsVersionCode = propertyReader.getProp("ro.mi.os.version.code")
+            val hyperOsVersionCode = propertyReader.getProp("ro.mi.os.version.code")?.lowercase()
             // Example value: OS1.0
-            val hyperOsVersionName = propertyReader.getProp("ro.mi.os.version.name")
+            val hyperOsVersionName = propertyReader.getProp("ro.mi.os.version.name")?.lowercase()
             // Example value: OS1.0.9.0.TKCINXM
-            val hyperOsIncrementalVersion = propertyReader.getProp("ro.mi.os.version.incremental")
+            val hyperOsIncrementalVersion =
+                propertyReader.getProp("ro.mi.os.version.incremental")?.lowercase()
             // Xiaomi - MIUI
             // Example value: 14
-            val miuiVersionCode = propertyReader.getProp("ro.miui.ui.version.code")
+            val miuiVersionCode = propertyReader.getProp("ro.miui.ui.version.code")?.lowercase()
             // Example value: V140
-            val miuiVersionName = propertyReader.getProp("ro.miui.ui.version.name")
+            val miuiVersionName = propertyReader.getProp("ro.miui.ui.version.name")?.lowercase()
 
             // Transsion - HiOS, Infinix
             // Example value: hios (for HiOS), xos (for XOS)
-            val tranosType = propertyReader.getProp("ro.tranos.type")
+            val tranosType = propertyReader.getProp("ro.tranos.type")?.lowercase()
             // Example value: hios14.0.1 (for HiOS), xos13.0.0 (for XOS)
-            val tranosVersion = propertyReader.getProp("ro.tranos.version")
+            val tranosVersion = propertyReader.getProp("ro.tranos.version")?.lowercase()
 
             // BBK - Oppo, Vivo, Realme, Oneplus, IQOO
+            // Oppo
+            val colorOSProduct = propertyReader.getProp("ro.build.product")?.lowercase()
             // Realme
             // Example value: realme
-            val realmeBrandSubCategory = propertyReader.getProp("ro.product.brand.sub")
+            val realmeBrandSubCategory = propertyReader.getProp("ro.product.brand.sub")?.lowercase()
             // Example value: realmeUI
-            val realmeOsType = propertyReader.getProp("ro.product.brand.ui")
+            val realmeOsType = propertyReader.getProp("ro.product.brand.ui")?.lowercase()
             // Oneplus
             // Example value: V12.1
-            val oneplusOsVersion = propertyReader.getProp("ro.build.version.oplusrom")
+            val oneplusOsVersion = propertyReader.getProp("ro.build.version.oplusrom")?.lowercase()
+            // IQO
+            // Example: Funtouch
+            val vivoOSName = propertyReader.getProp("ro.vivo.os.name")?.lowercase()
+            val vivoOSVersion = propertyReader.getProp("ro.vivo.os.version")?.lowercase()
 
             // Nothing
             // Example value: Nothing OS (3)
-            val nothingOsVersion = propertyReader.getProp("ro.build.nothing.version")
+            val nothingOsVersion = propertyReader.getProp("ro.build.nothing.version")?.lowercase()
 
-            return when (manufacturer) {
-                DeviceManufacturer.XIAOMI -> when {
-                    hyperOsVersionCode != null && hyperOsVersionName != null && hyperOsIncrementalVersion != null -> DeviceOS.XIAOMI_HYPEROS
-                    miuiVersionCode != null && miuiVersionName != null -> DeviceOS.XIAOMI_MIUI
-                    else -> DeviceOS.UNKNOWN
-                }
+            return when {
+                hyperOsVersionCode != null && hyperOsVersionName != null && hyperOsIncrementalVersion != null -> DeviceOS.XIAOMI_HYPEROS
+                miuiVersionCode != null && miuiVersionName != null -> DeviceOS.XIAOMI_MIUI
 
-                DeviceManufacturer.TRANSSION -> when (tranosType?.lowercase()) {
-                    "hios" -> DeviceOS.TRANSSION_HIOS
-                    "xos" -> DeviceOS.TRANSSION_XOS
-                    else -> DeviceOS.UNKNOWN
-                }
+                tranosVersion != null && tranosType != null && "hios" in tranosType -> DeviceOS.TRANSSION_HIOS
+                tranosVersion != null && tranosType != null && "xos" in tranosType -> DeviceOS.TRANSSION_XOS
 
-                DeviceManufacturer.BBK -> when (realmeOsType?.lowercase()) {
-                    "realmeui" -> DeviceOS.BBK_REALME_UI
-                    else -> when {
-                        oneplusOsVersion != null -> DeviceOS.BBK_ONEPLUS_OS
-                        else -> DeviceOS.UNKNOWN
-                    }
-                }
+                nothingOsVersion != null -> DeviceOS.NOTHING_OS
 
-                DeviceManufacturer.NOTHING -> when {
-                    nothingOsVersion != null -> DeviceOS.NOTHING_OS
-                    else -> DeviceOS.UNKNOWN
-                }
+                realmeBrandSubCategory != null && realmeOsType != null && "realmeui" in realmeOsType -> DeviceOS.BBK_REALME_UI
+                vivoOSVersion != null && vivoOSName != null && "funtouch" in vivoOSName -> DeviceOS.BBK_FUNTOUCH_OS
+                oneplusOsVersion != null && colorOSProduct != null && "cph" in colorOSProduct -> DeviceOS.BBK_COLOR_OS
+                oneplusOsVersion != null -> DeviceOS.BBK_ONEPLUS_OS
 
                 else -> DeviceOS.UNKNOWN
             }
