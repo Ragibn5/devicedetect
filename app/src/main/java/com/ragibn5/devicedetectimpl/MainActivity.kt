@@ -61,6 +61,8 @@ class MainActivity : AppCompatActivity() {
         fingerprint: String?,
         commandResult: String
     ) {
+        val rawBrand = Build.BRAND
+        val rawManufacturer = Build.MANUFACTURER
         // Create what to share
         val textToShare = String.format(
             "%s\n\n%s",
@@ -76,7 +78,12 @@ class MainActivity : AppCompatActivity() {
 
         // Create a temporary file in the cache directory
         val fileUri: Uri? = runCatching {
-            val file = File.createTempFile("device_info_", ".txt", externalCacheDir)
+            val file =
+                File.createTempFile(
+                    getValidStringForFileName("info_${rawManufacturer}_${rawBrand}_s"),
+                    ".txt",
+                    externalCacheDir
+                )
             file.writeText(textToShare)
 
             // Use FileProvider for sharing
@@ -105,7 +112,7 @@ class MainActivity : AppCompatActivity() {
                             )
                             putExtra(
                                 Intent.EXTRA_SUBJECT,
-                                "Device info for PiTracker"
+                                "Device info for PiTracker (${rawManufacturer}+${rawBrand})"
                             )
                             putExtra(
                                 Intent.EXTRA_STREAM,
@@ -139,5 +146,22 @@ class MainActivity : AppCompatActivity() {
                 }, "Share via")
             )
         }
+    }
+
+    fun getValidStringForFileName(s: String): String {
+        return s.replace("<", "_")
+            .replace(">", "_")
+            .replace("*", "_")
+            .replace("?", "_")
+            .replace("/", "_")
+            .replace("\\", "_")
+            .replace(":", "_")
+            .replace("|", "_")
+            .replace("\'", "_")
+            .replace("\"", "_")
+            .replace("$", "_")
+            .replace("!", "_")
+            .replace("+", "_")
+            .replace("=", "_");
     }
 }
