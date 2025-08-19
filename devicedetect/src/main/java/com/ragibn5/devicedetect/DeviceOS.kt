@@ -1,4 +1,4 @@
-import com.ragibn5.devicedetect.DeviceManufacturer
+package com.ragibn5.devicedetect
 
 enum class DeviceOS(val manufacturer: DeviceManufacturer) {
     ////

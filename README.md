@@ -51,6 +51,11 @@ Available info (as of now):
   An enum type representing the brand of the device.
 - [DeviceManufacturer](devicedetect/src/main/java/com/ragibn5/devicedetect/DeviceManufacturer.kt)
   An enum type representing the manufacturer of the device.
+- [DeviceOS](devicedetect/src/main/java/com/ragibn5/devicedetect/DeviceOS.kt)
+  An enum type representing the operating system of the device.
+
+Note, The OS detection is verified for only Xiaomi, Transsion, and Nothing devices as of now.
+We will expand the library to support more operating systems with upcoming releases.
 
 ## Building a New Local Release
 
@@ -71,10 +76,38 @@ files.
 
 ## Using in Other Projects
 
-Add this to your build.gradle:
+If you are managing the dependency repositories with settings.gradle (newer projects):
+Add `maven { url 'https://jitpack.io' }` at the end of `dependencyResolutionManagement.repositories`
+block:
 
 ```groovy
-implementation 'com.github.Ragibn5:devicedetect:0.0.1'
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Or, if you are managing the dependency repositories with build.gradle (older projects):
+Add `maven { url 'https://jitpack.io' }` at the end of `rootProject.allprojects.repositories` block:
+
+```groovy
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenLocal()
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
+```
+
+Add this to your module build.gradle:
+
+```groovy
+implementation 'com.github.Ragibn5:devicedetect:0.0.3'
 ```
 
 ## Contributing
