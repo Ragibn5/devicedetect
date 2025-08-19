@@ -1,6 +1,5 @@
 package com.ragibn5.devicedetect
 
-import DeviceOS
 import android.os.Build
 import com.ragibn5.devicedetect.utils.DefaultPropertyReader
 import com.ragibn5.devicedetect.utils.DefaultTerminal
@@ -188,6 +187,7 @@ data class DeviceVendor(
             val vivoOSVersion = propertyReader.getProp("ro.vivo.os.version")?.lowercase()
 
             // Nothing
+            Build.BRAND
             // Example value: Nothing OS (3)
             val nothingOsVersion = propertyReader.getProp("ro.build.nothing.version")?.lowercase()
 
