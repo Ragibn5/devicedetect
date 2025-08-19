@@ -1,80 +1,78 @@
 package com.ragibn5.devicedetect
 
-enum class DeviceBrand(val id: String) {
+enum class DeviceBrand {
     // Samsung
-    Samsung("samsung"),
+    SAMSUNG,
 
     // Xiaomi Family
-    Xiaomi("xiaomi"),
-    Redmi("redmi"),
-    Poco("poco"),
+    XIAOMI,
+    REDMI,
+    POCO,
 
     // Huawei Family
-    Huawei("huawei"),
-    Honor("honor"),
+    HUAWEI,
+    HONOR,
 
-    // Oppo Family
-    Oppo("oppo"),
-    OnePlus("oneplus"),
-    Realme("realme"),
-
-    // Vivo Family
-    Vivo("vivo"),
-    iQOO("iqoo"),
+    // BBK Family
+    OPPO,
+    ONEPLUS,
+    REALME,
+    VIVO,
+    IQOO,
 
     // Google
-    Google("google"),
+    GOOGLE,
 
     // Sony
-    Sony("sony"),
+    SONY,
 
     // LG
-    LG("lg"),
+    LG,
 
     // Motorola
-    Motorola("motorola"),
+    MOTOROLA,
 
     // Nokia (HMD Global)
-    Nokia("nokia"),
+    NOKIA,
 
     // Asus
-    Asus("asus"),
+    ASUS,
 
     // HTC
-    HTC("htc"),
+    HTC,
 
     // Lenovo
-    Lenovo("lenovo"),
+    LENOVO,
 
     // Nothing
-    Nothing("nothing"),
+    NOTHING,
 
     // Tecno Family (Transsion Holdings)
-    Tecno("tecno"),
-    Infinix("infinix"),
-    Itel("itel"),
+    TECNO,
+    INFINIX,
+    ITEL,
 
     // TCL
-    TCL("tcl"),
+    TCL,
 
     // ZTE
-    ZTE("zte"),
+    ZTE,
 
     // Fairphone
-    Fairphone("fairphone"),
+    FAIRPHONE,
 
     // Essential
-    Essential("essential"),
+    ESSENTIAL,
 
     // Amazon
-    Amazon("amazon"),
+    AMAZON,
 
     // Microsoft
-    Microsoft("microsoft"),
+    MICROSOFT,
 
     // BlackBerry
-    BlackBerry("blackberry"),
+    BLACKBERRY,
 
     // Unknown
-    Unknown("unknown")
+    UNKNOWN
 }

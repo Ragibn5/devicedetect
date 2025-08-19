@@ -1,5 +1,6 @@
 package com.ragibn5.devicedetectimpl
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -25,9 +26,11 @@ class MainActivity : AppCompatActivity() {
     private fun test() {
         val vendor = DeviceVendor.detect()
         findViewById<TextView>(R.id.preview).text = String.format(
-            "Brand: %s\nManufacturer: %s",
+            "Brand: %s\nManufacturer: %s\nOS: %s\n\n\nFG:%s",
             vendor.brand,
             vendor.manufacturer,
+            vendor.os,
+            Build.FINGERPRINT
         )
     }
 }
