@@ -14,6 +14,7 @@ enum class DeviceOS(val manufacturer: DeviceManufacturer) {
 
     // BBK
     BBK_COLOR_OS(DeviceManufacturer.BBK),
+    BBK_FUNTOUCH_OS(DeviceManufacturer.BBK),
     BBK_REALME_UI(DeviceManufacturer.BBK),
     BBK_ONEPLUS_OS(DeviceManufacturer.BBK),
     BBK_OXYGEN_OS(DeviceManufacturer.BBK),
