@@ -30,40 +30,53 @@ data class DeviceVendor(
             val manufacturer = Build.MANUFACTURER.lowercase()
 
             return when {
-                /// VERIFIED
-                // Xiaomi Family
-                "redmi" in brand || "redmi" in model ->
+                // Xiaomi - Tested
+                "xiaomi" in manufacturer && ("redmi" in brand || "redmi" in model) ->
                     DeviceManufacturer.XIAOMI to DeviceBrand.REDMI
 
-                "poco" in brand || "poco" in model ->
+                "xiaomi" in manufacturer && ("poco" in brand || "poco" in model) ->
                     DeviceManufacturer.XIAOMI to DeviceBrand.POCO
 
-                "xiaomi" in brand || "mi " in model ->
+                "xiaomi" in manufacturer ->
                     DeviceManufacturer.XIAOMI to DeviceBrand.XIAOMI
 
-                // Tecno Family (Transsion Holdings)
-                "tecno" in brand || "tecno" in model ->
+                // Transsion - Tested
+                "tecno" in manufacturer || "tecno" in brand || "tecno" in model ->
                     DeviceManufacturer.TRANSSION to DeviceBrand.TECNO
 
-                "infinix" in brand || "infinix" in model ->
+                "infinix" in manufacturer || "infinix" in brand || "infinix" in model ->
                     DeviceManufacturer.TRANSSION to DeviceBrand.INFINIX
 
-                "itel" in brand || "itel" in model ->
+                "itel" in manufacturer || "itel" in brand || "itel" in model ->
                     DeviceManufacturer.TRANSSION to DeviceBrand.ITEL
 
-                // Oppo Family
-                "oneplus" in brand || "1+" in brand ->
+                // Oppo - Partially tested
+                "oppo" in manufacturer || "oppo" in brand ->
+                    DeviceManufacturer.BBK to DeviceBrand.OPPO
+
+                "vivo" in manufacturer || "vivo" in brand ->
+                    DeviceManufacturer.BBK to DeviceBrand.VIVO
+
+                "iqoo" in manufacturer || "iqoo" in brand ->
+                    DeviceManufacturer.BBK to DeviceBrand.IQOO
+
+                "realme" in manufacturer || "realme" in brand ->
+                    DeviceManufacturer.BBK to DeviceBrand.REALME
+
+                "oneplus" in manufacturer || "oneplus" in brand || "1+" in brand || "1+" in manufacturer ->
                     DeviceManufacturer.BBK to DeviceBrand.ONEPLUS
 
-                // Nothing
-                "nothing" in brand ->
+                // Nothing - Tested
+                "nothing" in brand || "nothing" in manufacturer ->
                     DeviceManufacturer.NOTHING to DeviceBrand.NOTHING
 
-
-                /// UNVERIFIED
-                // Samsung
-                "samsung" in brand || "sm-" in model ->
+                // Samsung - Tested
+                "samsung" in manufacturer || "samsung" in brand || "sm-" in model ->
                     DeviceManufacturer.SAMSUNG to DeviceBrand.SAMSUNG
+
+                // Google - Tested
+                "google" in manufacturer || "google" in brand || "pixel" in model ->
+                    DeviceManufacturer.GOOGLE to DeviceBrand.GOOGLE
 
                 // Huawei Family
                 "honor" in brand || "honor" in model ->
@@ -71,23 +84,6 @@ data class DeviceVendor(
 
                 "huawei" in brand ->
                     DeviceManufacturer.HUAWEI to DeviceBrand.HUAWEI
-
-                // Oppo Family
-                "realme" in brand ->
-                    DeviceManufacturer.BBK to DeviceBrand.REALME
-
-                "oppo" in brand || "cph" in model ->
-                    DeviceManufacturer.BBK to DeviceBrand.OPPO
-
-                "iqoo" in brand || "iqoo" in model ->
-                    DeviceManufacturer.BBK to DeviceBrand.IQOO
-
-                "vivo" in brand ->
-                    DeviceManufacturer.BBK to DeviceBrand.VIVO
-
-                // Google
-                "google" in brand || "pixel" in model ->
-                    DeviceManufacturer.GOOGLE to DeviceBrand.GOOGLE
 
                 // Sony
                 "sony" in brand || "xperia" in model ->
@@ -164,20 +160,20 @@ data class DeviceVendor(
             // Example value: V140
             val miuiVersionName = propertyReader.getProp("ro.miui.ui.version.name")?.lowercase()
 
-            // Transsion - HiOS, Infinix
+            // Transsion - HiOS, XOS
             // Example value: hios (for HiOS), xos (for XOS)
             val tranosType = propertyReader.getProp("ro.tranos.type")?.lowercase()
             // Example value: hios14.0.1 (for HiOS), xos13.0.0 (for XOS)
             val tranosVersion = propertyReader.getProp("ro.tranos.version")?.lowercase()
 
             // BBK - Oppo, Vivo, Realme, Oneplus, IQOO
-            // Oppo
+            // Example: [CPHNNNN] in ColorOS, [RMXNNNN] in RealmeUI, [OnePlusMMM] in OnePlus
             val colorOSProduct = propertyReader.getProp("ro.build.product")?.lowercase()
             // Realme
-            // Example value: realme
-            val realmeBrandSubCategory = propertyReader.getProp("ro.product.brand.sub")?.lowercase()
-            // Example value: realmeUI
+            // Example value: realmeUI (only available in realme UI)
             val realmeOsType = propertyReader.getProp("ro.product.brand.ui")?.lowercase()
+            // Example value: [V4.0]
+            val realmeUiVersion = propertyReader.getProp("ro.build.version.realmeui")?.lowercase()
             // Oneplus
             // Example value: V12.1
             val oneplusOsVersion = propertyReader.getProp("ro.build.version.oplusrom")?.lowercase()
@@ -187,24 +183,34 @@ data class DeviceVendor(
             val vivoOSVersion = propertyReader.getProp("ro.vivo.os.version")?.lowercase()
 
             // Nothing
-            Build.BRAND
             // Example value: Nothing OS (3)
             val nothingOsVersion = propertyReader.getProp("ro.build.nothing.version")?.lowercase()
 
+            // Samsung
+            val oneUIVersion = propertyReader.getProp("ro.build.version.oneui")?.lowercase()
+
             return when {
+                // Xiaomi - Tested
                 hyperOsVersionCode != null && hyperOsVersionName != null && hyperOsIncrementalVersion != null -> DeviceOS.XIAOMI_HYPEROS
                 miuiVersionCode != null && miuiVersionName != null -> DeviceOS.XIAOMI_MIUI
 
-                tranosVersion != null && tranosType != null && "hios" in tranosType -> DeviceOS.TRANSSION_HIOS
-                tranosVersion != null && tranosType != null && "xos" in tranosType -> DeviceOS.TRANSSION_XOS
+                // Transsion - Tested
+                tranosVersion != null && tranosType != null && ("hios" in tranosType || "hios" in tranosVersion) -> DeviceOS.TRANSSION_HIOS
+                tranosVersion != null && tranosType != null && ("xos" in tranosType || "xos" in tranosVersion) -> DeviceOS.TRANSSION_XOS
 
-                nothingOsVersion != null -> DeviceOS.NOTHING_OS
-
-                realmeBrandSubCategory != null && realmeOsType != null && "realmeui" in realmeOsType -> DeviceOS.BBK_REALME_UI
+                // BBK - Tested
+                realmeOsType != null && realmeUiVersion != null && colorOSProduct != null && ("rmx" in colorOSProduct || "realmeui" in realmeOsType) -> DeviceOS.BBK_REALME_UI
+                colorOSProduct != null && "cph" in colorOSProduct -> DeviceOS.BBK_COLOR_OS
                 vivoOSVersion != null && vivoOSName != null && "funtouch" in vivoOSName -> DeviceOS.BBK_FUNTOUCH_OS
-                oneplusOsVersion != null && colorOSProduct != null && "cph" in colorOSProduct -> DeviceOS.BBK_COLOR_OS
                 oneplusOsVersion != null -> DeviceOS.BBK_ONEPLUS_OS
 
+                // Nothing - Tested
+                nothingOsVersion != null -> DeviceOS.NOTHING_OS
+
+                // Samsung - Tested
+                oneUIVersion != null -> DeviceOS.SAMSUNG_ONE_UI
+
+                // All other OS - Fallback - Tested
                 else -> DeviceOS.UNKNOWN
             }
         }

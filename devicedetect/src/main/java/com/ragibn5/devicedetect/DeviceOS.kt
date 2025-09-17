@@ -17,20 +17,16 @@ enum class DeviceOS(val manufacturer: DeviceManufacturer) {
     BBK_FUNTOUCH_OS(DeviceManufacturer.BBK),
     BBK_REALME_UI(DeviceManufacturer.BBK),
     BBK_ONEPLUS_OS(DeviceManufacturer.BBK),
-    BBK_OXYGEN_OS(DeviceManufacturer.BBK),
 
     // Nothing
     NOTHING_OS(DeviceManufacturer.NOTHING),
 
+    // Samsung
+    SAMSUNG_ONE_UI(DeviceManufacturer.SAMSUNG),
+
 
     /*////
     // UNVERIFIED
-
-    // Samsung
-    SAMSUNG_ONE_UI(DeviceManufacturer.Samsung),
-    SAMSUNG_TIZEN(DeviceManufacturer.Samsung),
-    SAMSUNG_BADA(DeviceManufacturer.Samsung),
-
     // Huawei
     HUAWEI_EMUI(DeviceManufacturer.Huawei),
     HUAWEI_HARMONYOS(DeviceManufacturer.Huawei),
