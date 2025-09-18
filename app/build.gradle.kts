@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.ragibn5.devicedetectimpl"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.ragibn5.devicedetectimpl"
