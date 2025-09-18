@@ -7,7 +7,7 @@ plugins {
 android {
     namespace = "com.ragibn5.devicedetect"
 
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 21
@@ -58,7 +58,7 @@ publishing {
         create<MavenPublication>("release") {
             groupId = "com.ragibn5"
             artifactId = "devicedetect"
-            version = "0.0.3"
+            version = "0.0.5"
 
             afterEvaluate {
                 from(components["release"])
